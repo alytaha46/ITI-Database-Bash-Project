@@ -1,3 +1,2 @@
 # ignore generated databases
-./databases
-./databases/*
+databases/
