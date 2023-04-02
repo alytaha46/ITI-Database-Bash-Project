@@ -1,7 +1,11 @@
 #!/bin/bash
 
 #list every database folder in single line
-ls -1 $project_path/databases/
+if [ "$(ls -1 $project_path/databases/ | wc -l)" -eq 0 ]; then
+  echo "No Databases found"
+else
+  ls -1 $project_path/databases/
+fi
 
 <<COMMENT
 # Display Main menu
