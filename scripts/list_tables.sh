@@ -1,11 +1,11 @@
 #!/bin/bash
 
 db_name=$1
-
+echo `ls -A "$project_path/databases/$db_name"`
 #project_path="/home/mina/Desktop/ITI-Database-Bash-Project"
 
 if [ $project_path ]; then
-    if [ `ls -A "$project_path/databases/$db_name"` ]; then
+    if [[ `ls -A "$project_path/databases/$db_name"` ]]; then
         typeset -i counter=1
         for table in $(ls "$project_path/databases/$db_name"); do
             echo "$counter) $table"
