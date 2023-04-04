@@ -9,11 +9,11 @@ table_name=$2
 
 case $table_name in
     [a-zA-Z_]*)
-    if [ -f "$project_path/databases/$db_name/$table_name" ]; 
+    if [ -f "./databases/$db_name/$table_name" ]; 
     	then
         echo table $table_name is already exists
     else
-    	touch "$project_path/databases/$db_name/$table_name"
+    	touch "./databases/$db_name/$table_name"
     	echo table $table_name created successfully
     fi
     ;;
