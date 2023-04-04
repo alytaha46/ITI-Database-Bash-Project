@@ -5,9 +5,7 @@ read db_name
 
 if [ -d "$project_path/databases/$db_name" ]; 
 then
-	echo $project_path/databases/$db_name
 	echo "database selected, what do you want to do ?"
-	echo "Please enter a SQL command:"
 	# Display menu 2
 	select choise in "list tables" "create table" "insert into table" "select from table" "update table" "delete from table" "drop table"; do
     	case $choise in
