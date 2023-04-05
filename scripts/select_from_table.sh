@@ -1,29 +1,36 @@
 #!/bin/bash
 
-db_name=$1
+database_name=$1
 table_name=$2
-#PS3="$db_name>$table_name>"
+#PS3="$database_name>$table_name>"
 
 # how to select from the table
 function selectOptions {
     echo "What do you want to select"
-    select option in "all records" "by record number" "by primary key"; do
+    select option in "all records" "seelct row where pk = ?" "back" "main menu"; do
         case $option in
         "all records")
-            echo "all"
+            sed -n 1p ./databases/$database_name/$table_name
+            tail -n +4 ./databases/$database_name/$table_name
             ;;
-        "by record number")
-            typeset -i num
-            read -p "enter record num : " num
-            if [ $num -gt 0 ]; then
-                sed -n $(($num+3))p ./databases/$db_name/$table_name
+        "seelct row where pk = ?")
+            #search line 3 for primary key and detect primary key column name
+            pk_index=$(awk -F: 'NR=3 {for(i=1; i<=NF; i++) if ($i == "PK") print i}' ./databases/$database_name/$table_name)
+            if [ $pk_index ]; then
+                # read primary key from user to select corresponding row from table
+                typeset -i pk
+                read -p "enter the primary key : " pk
+                # print the matching row
+                awk -F: -v pk="$pk" -v pk_index="$pk_index" 'NR>3 {if ($$pk_index == $pk) print $0}' ./databases/$database_name/$table_name
             else
-                echo invalid record number
-                break
+                echo "table doesn't have a primary key"
             fi
             ;;
-        "by primary key")
-            echo primary
+        "back")
+            ./scripts/connect_database.sh $database_name
+            ;;
+        "main menu")
+            ./run.sh
             ;;
         esac
     done
@@ -32,10 +39,10 @@ function selectOptions {
 # print table info
 function showTableInfo {
     # number of columns
-    num_of_columns=$(sed -n '1p' ./databases/$db_name/$table_name | awk -F: '{ print NF }')
+    num_of_columns=$(sed -n '1p' ./databases/$database_name/$table_name | awk -F: '{ print NF }')
     echo $num_of_columns columns
     # number of columns
-    num_of_records=$(tail -n +4 ./databases/$db_name/$table_name | wc -l)
+    num_of_records=$(tail -n +4 ./databases/$database_name/$table_name | wc -l)
     echo $num_of_records records
 }
 
