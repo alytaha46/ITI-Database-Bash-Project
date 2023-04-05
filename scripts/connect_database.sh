@@ -1,5 +1,14 @@
 #!/bin/bash
 
+function validate_table 
+{
+if [[ $table_name =~ ^([a-zA-Z_])[a-zA-Z0-9_]*$ ]]; then
+$1 $2 $3
+else
+echo "empty or invalid table name"
+fi
+}
+
 echo "Please enter database you want to select"
 read db_name
 
@@ -16,32 +25,32 @@ then
 	"create table")
 	    echo "Please enter table name"
 	    read table_name
-	    ./scripts/create_table.sh $db_name $table_name
+	    validate_table ./scripts/create_table.sh $db_name $table_name
 	    ;;
 	  "insert into table")
 	    echo "Please enter table name"
 	    read table_name
-	    ./scripts/insert_into_table.sh $db_name $table_name
+	    validate_table ./scripts/insert_into_table.sh $db_name $table_name
 	    ;;
 	  "select from table")
 	    echo "Please enter table name"
 	    read table_name
-	    ./scripts/select_from_table.sh $db_name $table_name
+	    validate_table ./scripts/select_from_table.sh $db_name $table_name
 	    ;;
 	  "update table")
 	    echo "Please enter table name"
 	    read table_name
-	    ./scripts/update_table.sh $db_name $table_name
+	    validate_table ./scripts/update_table.sh $db_name $table_name
 	    ;;
 	  "delete from table")
 	    echo "Please enter table name"
 	    read table_name
-	    ./scripts/delete_from_table.sh $db_name $table_name
+	    validate_table ./scripts/delete_from_table.sh $db_name $table_name
 	    ;;
 	  "drop table")
 	    echo "Please enter table name"
 	    read table_name
-	    ./scripts/drop_table.sh $db_name $table_name
+	    validate_table ./scripts/drop_table.sh $db_name $table_name
 	    ;;
 	  *)
 	    echo "Invalid command"
@@ -51,3 +60,5 @@ done
 else
 	echo Database $db_name not found
 fi
+
+
