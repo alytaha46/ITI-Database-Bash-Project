@@ -9,46 +9,102 @@ table_name=$2
 
 
 if [ -f ./databases/$db_name/$table_name ]; then
-            echo "table name already exists choose a different table name"
+echo "table name already exists choose a different table name"
 else
             
 # Prompt the user for the array size
 read -p "Enter number of columns : " size
 
 # Create three arrays of the same size as the input
-declare -a array1=()
-declare -a array2=()
-declare -a array3=()
+declare -a column_names=()
+declare -a datatypes=()
+declare -a constrains=()
 
-for ((i=0; i<$size; i++)); do
-  # Loop through the arrays simultaneously and take user inputs
-  read -p "Enter element $i for array 1: " elem1
-  read -p "Enter element $i for array 2: " elem2
-  read -p "Enter element $i for array 3: " elem3
-
-  # Save the inputs to the corresponding arrays
-  array1[$i]=$elem1
-  array2[$i]=$elem2
-  array3[$i]=$elem3
+echo "please enter PK column name: " 
+while read pk_name; do
+if [[ $pk_name =~ ^([a-zA-Z_])[a-zA-Z0-9_]*$ ]]; then
+  column_names[0]=$pk_name
+  break
+else
+  echo "invalid column name"
+fi
 done
 
-# Print the contents of the arrays for verification
-echo "Array 1: ${array1[@]}"
-echo "Array 2: ${array2[@]}"
-echo "Array 3: ${array3[@]}"
+datatypes[0]="int"
+constrains[0]="PK"
+for ((i=2; i<=$size; i++)); do
+  # Loop through the arrays simultaneously and take user inputs
+  echo "Enter column name number $i: "
+  while read elem1; do
+if [[ $elem1 =~ ^([a-zA-Z_])[a-zA-Z0-9_]*$ ]]; then
+  column_names[$i]=$elem1
+  break
+else
+  echo "pk_name does not match the regex pattern."
+fi
+done
 
 
-touch "./databases/$db_name/$table_name"	
-echo table $table_name created successfully
-            
+  echo "Enter datatype of column number $i: "
+	select elem2 in "string" "int"; do
+	case "$elem2" in 
+	  "string")
+	    echo "string"
+	    datatypes[$i]="string"
+	    break
+	    ;;
+	  "int")
+	    echo "int"
+	    datatypes[$i]="int"
+	    break
+	    ;;
+	  *)
+	    echo "invalid"
+	    ;;
+	esac
+	done
+
+echo "Enter constrains of column number $i: "
+	select elem3 in "Null" "not null"; do
+	case "$elem3" in 
+	  "Null")
+	    echo "Null"
+	    constrains[$i]="NULL"
+	    break
+	    ;;
+	  "not null")
+	    echo "not null"
+	    constrains[$i]="NOT_NULL"
+	    break
+	    ;;
+	  *)
+	    echo "invalid"
+	    ;;
+	esac
+	done
+  	
+done
+line1=""
+line2=""
+line3=""
+for element in "${column_names[@]}"; do
+  line1+="$element:"
+done
+line1=${line1%?}
+echo $line1 >> ./databases/$db_name/$table_name
+
+for element in "${datatypes[@]}"; do
+  line2+="$element:"
+done
+line2=${line2%?}
+echo $line2 >> ./databases/$db_name/$table_name 
+
+for element in "${constrains[@]}"; do
+  line3+="$element:"
+done
+line3=${line3%?}
+echo $line3 >> ./databases/$db_name/$table_name
+
+echo table $table_name created successfully		
 fi
 
-table file structure
-#line 1
-columns name colon separated ( id:f_name:l_name:address:salary )
-# line 2
-datatypes colon separated (int:string:string:string:int)
-#line 3
-constrains colon separated (PK:NOT_NULL:NOT_NULL:NULL:NULL:NULL)  => empty means no constrains
-# line 4
-begining of data (1:aly:taha:asyout:20000)
