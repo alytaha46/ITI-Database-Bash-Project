@@ -32,9 +32,9 @@ done
 
 datatypes[0]="int"
 constrains[0]="PK"
-for ((i=2; i<=$size; i++)); do
+for ((i=1; i<$size; i++)); do
   # Loop through the arrays simultaneously and take user inputs
-  echo "Enter column name number $i: "
+  echo "Enter column name number $((i+1)): "
   while read elem1; do
 if [[ $elem1 =~ ^([a-zA-Z_])[a-zA-Z0-9_]*$ ]]; then
   column_names[$i]=$elem1
@@ -45,7 +45,7 @@ fi
 done
 
 
-  echo "Enter datatype of column number $i: "
+  echo "Enter datatype of column number $((i+1)): "
 	select elem2 in "string" "int"; do
 	case "$elem2" in 
 	  "string")
@@ -64,7 +64,7 @@ done
 	esac
 	done
 
-echo "Enter constrains of column number $i: "
+echo "Enter constrains of column number $((i+1)): "
 	select elem3 in "Null" "not null"; do
 	case "$elem3" in 
 	  "Null")
