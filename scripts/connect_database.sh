@@ -2,7 +2,7 @@
 
 function validate_table 
 {
-if [[ $table_name =~ ^([a-zA-Z_])[a-zA-Z0-9_]*$ ]]; then
+if [[ $3 =~ ^([a-zA-Z_])[a-zA-Z0-9_]*$ ]]; then
 $1 $2 $3
 else
 echo "empty or invalid table name"
