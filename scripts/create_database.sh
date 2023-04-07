@@ -5,19 +5,16 @@ shopt -s extglob
 
 # read database name from user
 echo "choose database name"
-while read db_name; do
-    case $db_name in
-    [a-zA-z]*)
-        if [ -d ./databases/$db_name ]; then
-            echo "database already exists choose a different database name"
-        else
-            mkdir ./databases/$db_name
-            echo database $db_name created successfully
-            break
-        fi
-        ;;
-    *)
-        echo "empty or invalid database name"
-        ;;
-    esac
-done
+read database_name
+# check the input match correct naming constrains
+if [[ $database_name && $database_name =~ ^[a-zA-Z0-9_]*$ ]]; then
+    if [ -d ./databases/$database_name ]; then
+        echo "database already exists choose a different database name"
+    else
+        mkdir ./databases/$database_name
+        echo database $database_name created successfully
+        break
+    fi
+else
+    echo "empty or invalid database name"
+fi
