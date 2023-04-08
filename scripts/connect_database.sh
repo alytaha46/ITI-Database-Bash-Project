@@ -11,7 +11,7 @@ ext=0
 display_menu_2() {
 	echo "$db_name database selected, what do you want to do ?"
 	# Display menu 2
-	select choise in "list tables" "create table" "insert into table" "select from table" "update table" "delete from table" "drop table" "back"; do
+	select choise in "list tables" "create table" "insert into table" "select from table" "select from table GUI" "update table" "delete from table" "drop table" "back"; do
 		case $choise in
 		"list tables")
 			./scripts/list_tables.sh $db_name
@@ -33,6 +33,12 @@ display_menu_2() {
 			echo "Please enter table name"
 			read table_name
 			validate_table ./scripts/select_from_table.sh $db_name $table_name
+			break
+			;;
+		"select from table GUI")
+			echo "Please enter table name"
+			read table_name
+			validate_table ./scripts/select_from_table_GUI.sh $db_name $table_name
 			break
 			;;
 		"update table")
