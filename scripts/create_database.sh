@@ -6,10 +6,10 @@ shopt -s extglob
 # read database name from user
 echo "choose database name"
 read database_names
-for database_names in $database_names; do
+for database_name in $database_names; do
     # check the input match correct naming constrains
-    if [[ $database_name && $database_name =~ ^[a-zA-Z0-9_]*$ ]]; then
-        if [ -d ./databases/$database_name ]; then
+    if [[ $database_name && $database_name =~ ^[a-zA-Z0-9_]+$ ]]; then
+        if [[ -d ./databases/$database_name ]]; then
             echo "database already exists choose a different database name"
         else
             mkdir ./databases/$database_name
