@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# define and export project working directory
-#export project_path=`pwd`
-
-# check databases directory
+# create databases directory if doesn't exist
 if [ ! -d "./databases" ]; then
     mkdir "databases"
 fi
