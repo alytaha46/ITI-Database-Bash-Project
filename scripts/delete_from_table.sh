@@ -12,14 +12,16 @@ if [ -f ./databases/$db_name/$table_name ]; then
                         ;;
                 "delete by PK")
                         echo "please enter PK that you want to delete"
-                        read pk
-                        result=$(awk -v id="$pk" -F: '$1 == id { found=1; exit } END { if(found) print "yes"; else print "no" }' $file_path)
-                        if [[ $result == "yes" ]]; then
-                                awk -v id="$pk" -F: '$1 != id' $file_path >tmp.txt && mv tmp.txt $file_path
-                                echo row with PK = $pk deleted succesfly
-                        else
-                                echo pk not found
-                        fi
+                        read pks
+                        for pk in $pks; do
+                                result=$(awk -v id="$pk" -F: '$1 == id { found=1; exit } END { if(found) print "yes"; else print "no" }' $file_path)
+                                if [[ $result == "yes" ]]; then
+                                        awk -v id="$pk" -F: '$1 != id' $file_path >tmp.txt && mv tmp.txt $file_path
+                                        echo row with PK = $pk deleted succesfly
+                                else
+                                        echo pk not found
+                                fi
+                        done
                         ;;
                 "back")
                         exit
