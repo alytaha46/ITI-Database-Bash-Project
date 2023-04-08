@@ -17,10 +17,10 @@ function replace() {
         # convert the current row to an array
         declare -a arr=($(echo "$old_row" | tr ':' ' '))
         # modify the old value with the new one
-        arr[$(($column_index-1))]=$3
+        arr[$(($column_index - 1))]=$3
         # convert the array back to a regular table row after modification
         new_line=$(echo ${arr[*]} | tr ' ' ':')
-        # update the old row with the new row 
+        # update the old row with the new row
         sed -i "${line_number}c ${new_line}" $table_path
 }
 
