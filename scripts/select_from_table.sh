@@ -8,11 +8,12 @@ table_path="$database_path/$table_name"
 # how to select from the table
 function selectOptions {
     echo "What do you want to select"
-    select option in "all records" "select row(s)" "back" "main menu"; do
+    select option in "all records" "select row(s)" "back"; do
         case $option in
         "all records")
             sed -n 1p $table_path
             tail -n +4 $table_path
+            break
             ;;
         "select row(s)")
             # read primary keys from user
@@ -43,12 +44,10 @@ function selectOptions {
                     fi
                 fi
             done
+            break
             ;;
         "back")
-            ./scripts/connect_database.sh $database_name
-            ;;
-        "main menu")
-            ./run.sh
+            exit
             ;;
         esac
     done

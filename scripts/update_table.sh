@@ -27,7 +27,7 @@ function replace() {
 # check if table exists
 if [[ -f $table_path ]]; then
         # update table main menu
-        select option in "update table name" "update column name" "update record(s)" "back" "main menu"; do
+        select option in "update table name" "update column name" "update record(s)" "back"; do
                 case $option in
                 "update table name")
                         # read the new table name
@@ -40,6 +40,7 @@ if [[ -f $table_path ]]; then
                         # needs review
                         table_name=$new_table_name
                         table_path="$database_path/$table_name"
+                        break
                         ;;
                 "update column name")
                         # read current column name to modify
@@ -55,6 +56,7 @@ if [[ -f $table_path ]]; then
                         else
                                 echo column not found
                         fi
+                        break
                         ;;
                 "update record(s)")
                         # read primary keys from user
@@ -81,12 +83,10 @@ if [[ -f $table_path ]]; then
                                         echo pk=$pk not found
                                 fi
                         done
+                        break
                         ;;
                 "back")
-                        ./scripts/connect_database.sh $database_name
-                        ;;
-                "main menu")
-                        ./run.sh
+                        exit
                         ;;
                 esac
         done
